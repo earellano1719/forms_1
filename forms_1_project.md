@@ -53,3 +53,53 @@ This button should control another part of state - let's call it `formSubmitted`
 Using a Mars theme (red and orange), and inspired by the [Google Forms](https://www.google.com/search?q=google+forms&rlz=1C5CHFA_enUS748US752&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjk2ePhxdrfAhWxUt8KHRU0ArYQ_AUIDygC&biw=1379&bih=759) design language, style this page to your liking.
 
 This [resource](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Styling_HTML_forms) from MDN will be SUPER useful if you'd like to style any input elements.
+
+
+
+
+                 <br />
+                    <select name='diet' value={diet} onChange={this.handleCountryChange} required>
+                        {/* <option disabled value={diet}>-choose a diet-</option> */}
+                        <option>omnivore</option>
+                        <option>vegetarian</option>
+                        <option>vegan</option>
+                    </select>
+                    <br />
+                    <label htmlFor='reason'>Why do you want to be a Mars explorer?</label>
+                    <br />
+                    <input onChange={this.handleCountryChange} id='why' placeholder='type answer here' name='reason' value={reason}/>
+                    <br />
+                    <input type="submit" value="Submit"/>
+
+
+                </form>
+
+
+                <div>
+
+                {submit === false ?
+                    <div />
+                 :<div class="response">
+                    <p>
+                        <strong>Are you sure the information is correct?</strong>
+                    </p>
+                    <p>Name: {firstname} {lastname}</p>
+                    <p>Country of Origin: {country}</p>
+                    <p>Diet Preference: {diet}</p>
+                    <p>Your Reasons for Going: {reason}</p>
+                    <button
+                        onClick={this.submitHandler
+                        }
+                    >
+                        Confirm
+                    </button>
+                    </div>
+                }
+
+                {message === true ? (
+                    <p>Thanks for your submission!</p>
+                ) : (
+                    ""
+                )}
+
+                </div>
