@@ -19,12 +19,15 @@ class MarsForm extends React.Component{
             questionOne: "",
             questionTwo: "",
             familyHistory: {
-                            c: "Cancer",
-                            h: "Heart Disease",
-                            Diabetes: false
+                            Cancer: false,
+                            Diabetes: false,
+                            HeartDisease: false,
+                            values: ""
                             }
         }
         this.baseState = this.state
+        this.handleChange = this.handleChange.bind(this);
+        this.handleChecked = this.handleChecked.bind(this);
     }
 
     resetForm() {
@@ -50,25 +53,29 @@ class MarsForm extends React.Component{
         })
     }
 
-    handleCheckboxChange = event => {
-        // const {familyHistory} = this.state;
-        this.setState({
-            Diabetes: true
+    handleChecked = (event) => {
 
-        })
-      };
+        let newfamilyHistory = {...this.state.familyHistory}
+        newfamilyHistory[event.target.name] = !newfamilyHistory[event.target.name]
+
+
+        this.setState({ 
+            familyHistory: newfamilyHistory       
+        });
+      }
 
 
     
     render(){
-        console.log(this.state)
+    
    
         const { countries, firstname, lastname, reason, country, diet, message, submitInfo, date, breathe, familyHistory} = this.state;
-        
+
         let options = countries.map(country => { 
             return <option>{country.name}</option>
             
          });
+
 
         return(
             <>
@@ -76,11 +83,11 @@ class MarsForm extends React.Component{
 
                 <h1>Mission to Mars Registration Form</h1>
                 <form onChange={this.handleChange}>
-                    <input onChange={this.handleChange} type='text' name='firstname' value={firstname} placeholder='first name' required/><br />
-                    <input onChange={this.handleChange} type='text' name='lastname' value={lastname} placeholder='last name' required/>
+                    <input type='text' name='firstname' value={firstname} placeholder='first name' required/><br />
+                    <input type='text' name='lastname' value={lastname} placeholder='last name' required/>
 
 
-                    <input onChange={this.handleChange} type='date' id='start' name='date' 
+                    <input type='date' id='start' name='date' 
                     value={date} 
                     min='1900-01-01' max="2019-01-01" required/>
                     <br />
@@ -89,7 +96,7 @@ class MarsForm extends React.Component{
                     {options}
                     </select>
                     <br />
-                    <select name='diet' value={diet} onChange={this.handleChange} required>
+                    <select name='diet' value={diet} required>
                         <option disabled value=''>-choose a diet-</option>
                         <option>omnivore</option>
                         <option>vegetarian</option>
@@ -98,7 +105,7 @@ class MarsForm extends React.Component{
                     <br />
                     <label htmlFor='reason'>Why do you want to be a Mars explorer?</label>
                     <br />
-                    <input onChange={this.handleChange} id='why' placeholder='type answer here' name='reason' value={reason}/>
+                    <input id='why' placeholder='type answer here' name='reason' value={reason}/>
                     <br />
 
                     <p htmlFor='breathe'>Can you breathe underwater longer than 1 minute?</p>
@@ -185,25 +192,43 @@ class MarsForm extends React.Component{
                     <p htmlFor='familyHistory'>Does your family have a history of (check all that apply):</p>
 
                     <input
-                    name='familyHistory'
+                    name='Cancer'
                     type='checkbox'
-                    value={familyHistory.c} />
+                    onChange={this.handleChecked}
+                    checked={familyHistory.Cancer}
+                    value='Cancer'
+                    />
+
+
                     <label htmlFor='familyHistory'>Cancer</label>
                     <br />
 
-                    <input
-                    name='familyHistory'
-                    type='checkbox'
-                    value={familyHistory.h} />
-                    <label htmlFor='familyHistory'>Heart Disease</label>
-                    <br />
 
                     <input
-                    name='familyHistory'
-                    checked={familyHistory.d === true}
+                    name='Diabetes'
                     type='checkbox'
-                    value={familyHistory.d} />
+                    onChange={this.handleChecked}
+                    checked={familyHistory.Diabetes}
+                    />
+
+
                     <label htmlFor='familyHistory'>Diabetes</label>
+                    <br />
+
+
+                    <input
+                    name='HeartDisease'
+                    type='checkbox'
+                    onChange={this.handleChecked}
+                    checked={familyHistory.HeartDisease}
+                    />
+
+
+                    <label htmlFor='HeartDisease'>Heart Disease</label>
+                    <br />
+
+
+                    
                     <button type="button" onClick={this.submitHandler}>Submit
                     </button>
 
@@ -211,7 +236,7 @@ class MarsForm extends React.Component{
 
 
                 <div>
-
+                
                 {submitInfo === false ?
                     <div />
                  :<div class="response">
@@ -223,7 +248,10 @@ class MarsForm extends React.Component{
                     <p>Country of Origin: {country}</p>
                     <p>Diet Preference: {diet}</p>
                     <p>Your Reasons for Going: {reason}</p>
-                    <p>{familyHistory}</p>
+                    {(event) => familyHistory[event.target.name] === true ?
+                    <p>{{familyHistory[event.target.name]}}</p>
+                    : <p>goodbye</p>
+                    }
                     <br />
                     <button
                         onClick={event => {
